@@ -20,6 +20,7 @@
 #include <string>
 
 #include <liblp/liblp.h>
+#include <liblp/images.h>
 
 using namespace android;
 using namespace android::fs_mgr;
