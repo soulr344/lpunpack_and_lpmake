@@ -1,14 +1,14 @@
 #!/bin/bash
 
 cd liblog
-clang -fPIC -std=c++17 -fPIC -I../include -DLIBLOG_LOG_TAG=1006 -c log_event_list.cpp log_event_write.cpp logger_name.cpp logger_read.cpp logger_write.cpp logprint.cpp properties.cpp event_tag_map.cpp
+$CC -fPIC -std=c++17 -fPIC -I../include -DLIBLOG_LOG_TAG=1006 -c log_event_list.cpp log_event_write.cpp logger_name.cpp logger_read.cpp logger_write.cpp logprint.cpp properties.cpp event_tag_map.cpp
 ar rcs liblog.a *.o
-#clang -shared -o ../liblog.so *.o
+#$CC -shared -o ../liblog.so *.o
 
 cd ../base
-clang -fPIC -std=c++17 -I../include -DPAGE_SIZE=4096 -c abi_compatibility.cpp chrono_utils.cpp cmsg.cpp file.cpp liblog_symbols.cpp logging.cpp mapped_file.cpp parsebool.cpp parsenetaddress.cpp process.cpp properties.cpp stringprintf.cpp strings.cpp threads.cpp test_utils.cpp errors_unix.cpp
+$CC -fPIC -std=c++17 -I../include -DPAGE_SIZE=4096 -c abi_compatibility.cpp chrono_utils.cpp cmsg.cpp file.cpp liblog_symbols.cpp logging.cpp mapped_file.cpp parsebool.cpp parsenetaddress.cpp process.cpp properties.cpp stringprintf.cpp strings.cpp threads.cpp test_utils.cpp errors_unix.cpp
 ar rcs libbase.a *.o
-#clang -shared -o ../libbase.so *.o
+#$CC -shared -o ../libbase.so *.o
 
 if [ "$HOSTTYPE" = arm ] || [ "$HOSTTYPE" = aarch64 ];then
   cd ../zlib
@@ -23,20 +23,20 @@ if [ "$HOSTTYPE" = arm ] || [ "$HOSTTYPE" = aarch64 ];then
     CFLAGS="-DX86_NOT_WINDOWS -mssse3 -mpclmul -DCRC32_SIMD_SSE42_PCLMUL -DINFLATE_CHUNK_READ_64LE"
     sources="crc_folding.c fill_window_sse.c"
   fi
-  clang -fPIC -I. "$CFLAGS" -c adler32.c compress.c crc32.c deflate.c gzclose.c gzlib.c gzread.c gzwrite.c infback.c inffast.c inflate.c inftrees.c trees.c uncompr.c zutil.c adler32_simd.c cpu_features.c crc32_simd.c ${sources}
+  $CC -fPIC -I. "$CFLAGS" -c adler32.c compress.c crc32.c deflate.c gzclose.c gzlib.c gzread.c gzwrite.c infback.c inffast.c inflate.c inftrees.c trees.c uncompr.c zutil.c adler32_simd.c cpu_features.c crc32_simd.c ${sources}
   ar rcs libz.a *.o
-  #clang -shared -o ../libz.so *.o
+  #$CC -shared -o ../libz.so *.o
 fi
 
 cd ../libsparse
-clang -fPIC -std=c++17 -I../include -I../zlib -c backed_block.cpp output_file.cpp sparse.cpp sparse_crc32.cpp sparse_err.cpp sparse_read.cpp
+$CC -fPIC -std=c++17 -I../include -I../zlib -c backed_block.cpp output_file.cpp sparse.cpp sparse_crc32.cpp sparse_err.cpp sparse_read.cpp
 ar rcs libsparse.a *.o
-#clang -shared -o ../libsparse.so *.o
+#$CC -shared -o ../libsparse.so *.o
 
 cd ../ext4_utils
-clang -fPIC -std=c++17 -fno-strict-aliasing -I../include -I../zlib -c ext4_utils.cpp wipe.cpp ext4_sb.cpp
+$CC -fPIC -std=c++17 -fno-strict-aliasing -I../include -I../zlib -c ext4_utils.cpp wipe.cpp ext4_sb.cpp
 ar rcs libext4_utils.a *.o
-#clang -shared -o ../libext4_utils.so *.o
+#$CC -shared -o ../libext4_utils.so *.o
 
 cd ../crypto
 if [ "$HOSTTYPE" = aarch64 ];then
@@ -49,7 +49,7 @@ elif [ "$HOSTTYPE" = x86_64 ];then
   sources="linux-x86_64/crypto/chacha/chacha-x86_64.S linux-x86_64/crypto/cipher_extra/aes128gcmsiv-x86_64.S linux-x86_64/crypto/cipher_extra/chacha20_poly1305_x86_64.S linux-x86_64/crypto/fipsmodule/aesni-gcm-x86_64.S linux-x86_64/crypto/fipsmodule/aesni-x86_64.S linux-x86_64/crypto/fipsmodule/ghash-ssse3-x86_64.S linux-x86_64/crypto/fipsmodule/ghash-x86_64.S linux-x86_64/crypto/fipsmodule/md5-x86_64.S linux-x86_64/crypto/fipsmodule/p256-x86_64-asm.S linux-x86_64/crypto/fipsmodule/p256_beeu-x86_64-asm.S linux-x86_64/crypto/fipsmodule/rdrand-x86_64.S linux-x86_64/crypto/fipsmodule/rsaz-avx2.S linux-x86_64/crypto/fipsmodule/sha1-x86_64.S linux-x86_64/crypto/fipsmodule/sha256-x86_64.S linux-x86_64/crypto/fipsmodule/sha512-x86_64.S linux-x86_64/crypto/fipsmodule/vpaes-x86_64.S linux-x86_64/crypto/fipsmodule/x86_64-mont.S linux-x86_64/crypto/fipsmodule/x86_64-mont5.S linux-x86_64/crypto/test/trampoline-x86_64.S src/crypto/hrss/asm/poly_rq_mul.S"
 fi
 
-clang -fPIC -I. -I../include -c err_data.c\
+$CC -fPIC -I. -I../include -c err_data.c\
   src/crypto/asn1/a_bitstr.c\
   src/crypto/asn1/a_bool.c\
   src/crypto/asn1/a_d2i_fp.c\
@@ -279,25 +279,25 @@ clang -fPIC -I. -I../include -c err_data.c\
   src/third_party/fiat/curve25519.c\
   ${sources}
 ar rcs libcrypto.a *.o
-#clang -shared -o ../libcrypto.so *.o
+#$CC -shared -o ../libcrypto.so *.o
 
 cd ../libcrypto_utils
-clang -fPIC -I../include -c android_pubkey.c
+$CC -fPIC -I../include -c android_pubkey.c
 ar rcs libcrypto_utils.a *.o
-#clang -shared -o ../libcrypto_utils.so *.o
+#$CC -shared -o ../libcrypto_utils.so *.o
 
 cd ../liblp
-clang -fPIC -std=c++17 -D_FILE_OFFSET_BITS=64 -I../include -c builder.cpp images.cpp partition_opener.cpp property_fetcher.cpp reader.cpp utility.cpp writer.cpp
+$CC -fPIC -std=c++17 -D_FILE_OFFSET_BITS=64 -I../include -c builder.cpp images.cpp partition_opener.cpp property_fetcher.cpp reader.cpp utility.cpp writer.cpp
 ar rcs liblp.a *.o
-#clang -shared -o ../liblp.so *.o
+#$CC -shared -o ../liblp.so *.o
 
 cd ../partition_tools
 if [ "$HOSTTYPE" = i686 ] || [ "$HOSTTYPE" = x86_64 ];then
-  clang++ -static -std=c++17 -I../include -o ../lpunpack lpunpack.cc ../liblp/liblp.a ../libsparse/libsparse.a -lz ../base/libbase.a ../liblog/liblog.a ../crypto/libcrypto.a ../libcrypto_utils/libcrypto_utils.a ../ext4_utils/libext4_utils.a -lpthread
+  $CC++ -static -std=c++17 -I../include -o ../lpunpack lpunpack.cc ../liblp/liblp.a ../libsparse/libsparse.a -lz ../base/libbase.a ../liblog/liblog.a ../crypto/libcrypto.a ../libcrypto_utils/libcrypto_utils.a ../ext4_utils/libext4_utils.a -lpthread
 
-  clang++ -static -std=c++17 -I../include -o ../lpmake lpmake.cc ../liblp/liblp.a ../libsparse/libsparse.a -lz ../base/libbase.a ../liblog/liblog.a ../crypto/libcrypto.a ../libcrypto_utils/libcrypto_utils.a ../ext4_utils/libext4_utils.a -lpthread
+  $CC++ -static -std=c++17 -I../include -o ../lpmake lpmake.cc ../liblp/liblp.a ../libsparse/libsparse.a -lz ../base/libbase.a ../liblog/liblog.a ../crypto/libcrypto.a ../libcrypto_utils/libcrypto_utils.a ../ext4_utils/libext4_utils.a -lpthread
 else
-  clang++ -static -std=c++17 -I../include -o ../lpunpack lpunpack.cc ../liblp/liblp.a ../libsparse/libsparse.a ../zlib/libz.a ../base/libbase.a ../liblog/liblog.a ../crypto/libcrypto.a ../libcrypto_utils/libcrypto_utils.a ../ext4_utils/libext4_utils.a -lpthread
+  $CC++ -static -std=c++17 -I../include -o ../lpunpack lpunpack.cc ../liblp/liblp.a ../libsparse/libsparse.a ../zlib/libz.a ../base/libbase.a ../liblog/liblog.a ../crypto/libcrypto.a ../libcrypto_utils/libcrypto_utils.a ../ext4_utils/libext4_utils.a -lpthread
 
-  clang++ -static -std=c++17 -I../include -o ../lpmake lpmake.cc ../liblp/liblp.a ../libsparse/libsparse.a ../zlib/libz.a ../base/libbase.a ../liblog/liblog.a ../crypto/libcrypto.a ../libcrypto_utils/libcrypto_utils.a ../ext4_utils/libext4_utils.a -lpthread
+  $CC++ -static -std=c++17 -I../include -o ../lpmake lpmake.cc ../liblp/liblp.a ../libsparse/libsparse.a ../zlib/libz.a ../base/libbase.a ../liblog/liblog.a ../crypto/libcrypto.a ../libcrypto_utils/libcrypto_utils.a ../ext4_utils/libext4_utils.a -lpthread
 fi
